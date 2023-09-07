@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>JSON: Task 1</title>
+    <style>
+      p {
+        color: purple;
+        margin: 0.5em 0;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+    </style>
+  </head>
+
+  <body>
+
+    <section class="preview">
+    </section>
+
+  </body>
+  <script>
+    const section = document.querySelector('section');
+
+    let para1 = document.createElement('p');
+    let para2 = document.createElement('p');
+    let motherInfo = 'The mother cats are called ';
+    let kittenInfo;
+    const requestURL = 'https://mdn.github.io/learning-area/javascript/oojs/tasks/json/sample.json';
+
+    fetch(requestURL)
+    .then(response => response.text())
+    .then(text => displayCatInfo(text))
+
+    function displayCatInfo(catString) {
+        let total = 0;
+        let male = 0;
+        let female = 0;
+
+      const catsJsonArray = JSON.parse(catString);
+
+    // Alternative answer for better printing output for task 1  
+    // Prints The mother cats are called Lindy, Mina and Antonia
+    //   function getMotherNames() {
+    //     let motherNames = [];
+    //     let finalName = "";
+
+    //     for (let i = 0; i < catsJson.length; i++) {
+    //       if (i < catsJson.length - 1) {
+    //         motherNames.push(catsJson[i].name)
+    //       }
+    //       else if (i === catsJson.length - 1) {
+    //         motherNames.push(" and " + catsJson[i].name)
+    //       }
+    //   }
+    //   return motherInfo +=  motherNames.slice(0, motherNames.length-1).join(", ") + motherNames[motherNames.length-1];
+    // }
+    // getMotherNames();
+
+    // Task 1
+    for(i = 0; i <= catsJsonArray.length - 1; i++) {
+      if (i === catsJsonArray.length - 1) {
+        motherInfo += catsJsonArray[i].name;
+      }
+      else {
+        motherInfo += catsJsonArray[i].name + ", ";
+      }
+    }
+
+    // Task 2
+    for (i = 0; i < catsJsonArray.length - 1; i++) {
+      for (const kitten of catsJsonArray[i].kittens) {
+        
+        if (kitten.gender === "f") {
+          female++;
+        } else if (kitten.gender === "m") {
+          male++;
+        }
+        console.log(female, male)
+      }
+      kittenInfo = `Out of six (${female + male}) kittens four (${female}) are female and two (${male}) are male`
+    }
+
+        // Your task is to fill in the missing parts of the
+        // displayCatInfo() function to store:
+
+        // 1) The names of the three mother cats, separated by commas,
+        // in the motherInfo variable.
+        // 2) The total number of kittens, and how many are male and female,
+        // in the kittenInfo variable.
+
+        // Hint: The cat information comes as a string.
+        // You will need JSON.parse(string) function!
+
+        // Add your code here:
+
+        // Don't edit the code below here!
+
+        para1.textContent = motherInfo;
+        para2.textContent = kittenInfo;
+    }
+
+    section.appendChild(para1);
+    section.appendChild(para2);
+  </script>
+
+</html>
