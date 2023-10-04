@@ -1,31 +1,32 @@
 const userURL = "https://jsonplaceholder.typicode.com/users/";
+const userContainer = document.querySelector(".users-container");
 
-//Use fetch API with userURL to request the data stored in a server of URL address
-fetch(userURL)
-// Fetch returns a Promise object which the .then method evaluates and returns callback functions whether the promise was fulfilled or unsuccesful
-//Callback function turns the response into json using .json() method
-.then(response => response.json())
-// This where actually work with the response data that weas converted to json
-.then(data => {
-    
-    for (let i = 0; i < data.length; i++) {
-        const name = document.createElement("h1");
-        const userName = document.createElement("h2");
-        const userEmail = document.createElement("p");
-        const userAddress = document.createElement("p");
-        
-        name.textContent = data[i].name;
-        userName.textContent = data[i].username;
-        userEmail.textContent = data[i].email;
-        userAddress.textContent = data[i].address;
+async function logUsers() {
+    const response = await fetch(userURL);
+    const users = await response.json();
+    userName(users);
+}
 
+function userName(array) {
+    const userData = array.map(user => {
+        return `<h1>${user.name}</h1>
+        <h2>${user.username}</h2>
+        <p>${user.email}</p>
+        <p>Address:</p>
+        <ul>
+            <li>${user.address.street}</li>
+            <li>${user.address.suite}</li>
+            <li>${user.address.city}</li>
+            <li>${user.address.zipcode}</li>
+            <ul>
+                <li>${user.address.geo.lat}</li>
+                <li>${user.address.geo.lng}</li>
+            </ul>
+        </ul>
+        <p>${user.phone}</p>
+        <p>${user.website}</p>`
+    }).join("")
+    userContainer.innerHTML = userData;
+}
 
-        document.body.appendChild(name);
-        document.body.appendChild(userName);
-        document.body.appendChild(userEmail);
-        document.body.appendChild(userAddress);
-        }
-        
-        }
-    )
-
+logUsers()
